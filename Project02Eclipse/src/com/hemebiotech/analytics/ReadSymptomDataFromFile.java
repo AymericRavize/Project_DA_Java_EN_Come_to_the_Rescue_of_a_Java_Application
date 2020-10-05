@@ -2,46 +2,106 @@ package com.hemebiotech.analytics;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Simple brute force implementation
+ * 
+ * ReadSymptomDataFromFile is an utilitarian class that generate a file containing the symptoms and their iteration's number
+ * 
+ * @author Caroline ,Ravizé Aymeric
+ * @version V1.1
  *
  */
 public class ReadSymptomDataFromFile implements ISymptomReader {
 
-	private String filepath;
 	
 	/**
 	 * 
-	 * @param filepath a full or partial path to file with symptom strings in it, one per line
+	 * @author Ravizé Aymeric
+	 * @version V1.0
+	 * @since V1.1
+	 * 
+	 * @param filepath is the destination of the file that we want to read.
+	 * @return a HashMap containing the list of the symptoms and their occurence number.     
+	 *              
 	 */
-	public ReadSymptomDataFromFile (String filepath) {
-		this.filepath = filepath;
-	}
-	
-	@Override
-	public List<String> GetSymptoms() {
-		ArrayList<String> result = new ArrayList<String>();
-		
+	public static HashMap<String, Integer> GetSymptoms(String filepath) {
+
+		HashMap<String, Integer> symptoms = new HashMap<String, Integer>();
+
 		if (filepath != null) {
 			try {
-				BufferedReader reader = new BufferedReader (new FileReader(filepath));
+				BufferedReader reader = new BufferedReader(new FileReader(filepath));
 				String line = reader.readLine();
-				
+
 				while (line != null) {
-					result.add(line);
+
+					if(symptoms.containsKey(line)) {
+						symptoms.replace(line, (int) symptoms.get(line) + 1);
+					}
+					else {
+						symptoms.put(line, 1);
+					}
+					
 					line = reader.readLine();
 				}
 				reader.close();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+
 		}
-		
-		return result;
+		return symptoms;
 	}
+	/**
+	 * 
+	 * @author Ravizé Aymeric
+	 * @version V1.0
+	 * @since V1.1
+	 * 
+	 * @param symptoms is a HashMap of the symptoms to read
+	 * @param newFilePath is the name of the new file that we want to create and complete
+	 *                  
+	 */
+	public static void WriteSymptoms(HashMap<String, Integer> symptoms , String newFilePath) {
+		Iterator it = symptoms.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByKey()).iterator();
+		
+		try {
+			FileWriter writer = new FileWriter (newFilePath);
+			writer.write("");
+			while (it.hasNext()) {
+				Map.Entry m = (Map.Entry) it.next();
+				writer.append(m.getKey() + ":" + m.getValue() + "\n");
+
+			}
+			writer.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
+		
+	}
+	/**
+	 * 
+	 * @author Ravizé Aymeric
+	 * @version V1.0
+	 * @since V1.1
+	 * 
+	 * @param oldFilePath is the file to read destination.
+	 * @param newFilePath is the name of the new file that we want to create and complete.
+	 * @see WriteSymptoms calls GetSymptoms with the parameter oldFilePath and executes WriteSymptoms(HashMap,String) with the value that it send back and the parameter newFilePath.
+	 *                  
+	 */
+	public static void WriteSymptoms(String oldFilePath ,String newFilePath) {
+		WriteSymptoms(GetSymptoms(oldFilePath),newFilePath);		
+	}
+
 
 }

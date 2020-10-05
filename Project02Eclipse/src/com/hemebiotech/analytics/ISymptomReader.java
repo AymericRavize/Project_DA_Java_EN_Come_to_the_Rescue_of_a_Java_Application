@@ -1,20 +1,50 @@
 package com.hemebiotech.analytics;
 
-import java.util.List;
+import java.util.HashMap;
+
+
+
 
 /**
- * Anything that will read symptom data from a source
- * The important part is, the return value from the operation, which is a list of strings,
- * that may contain many duplications
  * 
- * The implementation does not need to order the list
+ * The implemented classes should contain a sorting method and a document generating method 
+ * 
+ * @author Caroline ,Ravizé Aymeric
+ * @version V1.1
  * 
  */
 public interface ISymptomReader {
 	/**
-	 * If no data is available, return an empty List
 	 * 
-	 * @return a raw listing of all Symptoms obtained from a data source, duplicates are possible/probable
+	 * @author Ravizé Aymeric
+	 * @version V1.0
+	 * 
+	 * If no data is available, return null
+	 * @param FilePath is the path to the file that we want to read
+	 * @return a HashMap with the symptoms and their occurrence
+	 * 
 	 */
-	List<String> GetSymptoms ();
+	
+	static HashMap<String ,Integer> GetSymptoms(String FilePath) {
+		return null;
+	}
+	/**
+	 * 
+	 * This function must edit/create a file to put the symptoms and their occurence in alphabetical order.
+	 *  
+	 * @author Ravizé Aymeric
+	 * @version V1.0
+	 * 
+	 * @param symptoms is a HashMap with the symptoms and their occurence
+	 * @param newFilePath is the file to edit/create name
+	 * 
+	 */
+	static void WriteSymptoms(HashMap<String, Integer> symptoms, String newFilePath) {
+	}
+	
+	
+	
+
+	
+	
 }
