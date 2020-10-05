@@ -38,17 +38,20 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 		if (filepath != null) {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(filepath));
+				// read first line of document
 				String line = reader.readLine();
 
 				while (line != null) {
-
+					
 					if(symptoms.containsKey(line)) {
+						//if symptom exists in HashMap increment counter
 						symptoms.replace(line, (int) symptoms.get(line) + 1);
 					}
 					else {
+						//if symptom not exists in HashMap set counter to 1
 						symptoms.put(line, 1);
 					}
-					
+					// read next line
 					line = reader.readLine();
 				}
 				reader.close();
@@ -70,12 +73,15 @@ public class ReadSymptomDataFromFile implements ISymptomReader {
 	 *                  
 	 */
 	public static void WriteSymptoms(HashMap<String, Integer> symptoms , String newFilePath) {
+		// sort of Hashmap when creating the iterator
 		Iterator it = symptoms.entrySet().stream().sorted(Map.Entry.<String, Integer>comparingByKey()).iterator();
 		
 		try {
+		// create the output file
 			FileWriter writer = new FileWriter (newFilePath);
 			writer.write("");
 			while (it.hasNext()) {
+				//getting the next item
 				Map.Entry m = (Map.Entry) it.next();
 				writer.append(m.getKey() + ":" + m.getValue() + "\n");
 
