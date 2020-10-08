@@ -1,6 +1,6 @@
 Sample project for OpenClassroom's fundamentals of Java
 
-Java 1.8
+Version de java a utiliser pour le fonctionement corecte du code :Java 1.8
 
 1. Installer  le logiciel eclipse 
 2. Ouvrir le projet (File->open project)
